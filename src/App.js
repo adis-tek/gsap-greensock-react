@@ -1,56 +1,39 @@
 import React, {useRef, useEffect} from 'react';
-import logo from './logo.svg';
-import './App.css';
+import './App.scss';
+import ring from './images/silver_ring.jpg'
+import CSSRulePlugin from 'gsap/CSSRulePlugin';
+import {TimelineLite, Power2} from 'gsap';
 
-import {TweenMax, Power3} from 'gsap'
 
 function App() {
-  let logoItem = useRef(null);
-  let textItem = useRef(null);
+  let container = useRef(null)
+  let image = useRef(null)
+  let imageReveal = CSSRulePlugin.getRule('.img-container:after')
 
-  console.log(logoItem);
+  const tl = new TimelineLite()
 
   useEffect(() => {
-    console.log(logoItem);
-    TweenMax.to(
-      logoItem,
-      .8,
-      {
-        opacity: 1,
-        y: -20,
-        ease: Power3.easeOut
-      }
-    )
-    TweenMax.to(
-      textItem,
-      .8,
-      {
-        opacity: 1,
-        y: -20,
-        ease: Power3.easeOut,
-        delay: .2,
-      }
-    )
+    tl.to(container, 1, { css: {visibility: 'visible'} }).to(
+      imageReveal, 
+      1.4, 
+      { width: '0%', ease: Power2.easeInOut }
+    ).from(image, 1.4, {scale: 1.6, ease: Power2.easeOut, delay: -1.6})
   }, [])
 
-  console.log(logoItem);
   return (
-    <div className="App">
-      <header className="App-header">
-        <img ref={el => {logoItem = el}} src={logo} className="App-logo" alt="logo" />
-        <p ref={el => {textItem = el}}>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <section className="main">
+      <div 
+      ref={el => container = el}
+      className="container">
+        <>
+          <div className="img-container">
+            <img 
+            ref={el => image = el}
+            src={ring} />
+          </div>
+        </>
+      </div>
+    </section>
   );
 }
 
